@@ -1,0 +1,23 @@
+{
+    "name": "thiagorb/service-generator-runtime",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thiago Barcala",
+            "email": "thiago.barcala@gmail.com"
+        }
+    ],
+    "require": {
+        "psr/http-message": "^1.0",
+        "psr/http-client": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thiagorb\\ServiceGeneratorRuntime\\": "src/"
+        }
+    },
+    "require-dev": {
+        "vimeo/psalm": "^3.0"
+    }
+}
