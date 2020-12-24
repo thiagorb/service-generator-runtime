@@ -32,6 +32,9 @@ abstract class ServiceContext
 
 	public function createRequest(string $httpMethod, string $url, array $data): RequestInterface
 	{
+		if (strtoupper($httpMethod === 'GET')) {
+			return $this->requestFactory->create($httpMethod, $url . '?' . http_build_query($data));
+		}
 		return $this->requestFactory->create($httpMethod, $url, $data);
 	}
 
@@ -52,17 +55,17 @@ abstract class ServiceContext
 	 * @param mixed $value
 	 * @return mixed
 	 */
-	public function encode(array $typeArray, $value)
+	public function encode(array $transformerDefinition, $value)
 	{
-		return Builder::build($typeArray)->encode($value);
+		return Builder::build($transformerDefinition)->encode($value);
 	}
 
 	/**
 	 * @param mixed $value
 	 * @return mixed
 	 */
-	public function decode(array $typeArray, $value)
+	public function decode(array $transformerDefinition, $value)
 	{
-		return Builder::build($typeArray)->decode($value);
+		return Builder::build($transformerDefinition)->decode($value);
 	}
 }

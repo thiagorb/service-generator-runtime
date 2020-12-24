@@ -16,6 +16,7 @@ abstract class ImmutableObjectTransformer implements TransformerInterface
      * [
      *     'propertyName' => [
      *         'transformer' => ArrayTransformers::class,
+     *         'encodedName' => 'property_name',
      *         'arguments' => [
      *             [
      *                 'transformer' => PrimitiveTransformers::class,
@@ -36,7 +37,7 @@ abstract class ImmutableObjectTransformer implements TransformerInterface
             $getter = 'get' . ucfirst($propertyName);
             $encodedValue = Builder::build($propertyParameters)->encode($value->$getter());
             if (!is_null($encodedValue)) {
-                $encoded[$this->decamelize($propertyName)] = $encodedValue;
+                $encoded[$propertyParameters['encodedName']] = $encodedValue;
             }
         }
 
@@ -48,7 +49,7 @@ abstract class ImmutableObjectTransformer implements TransformerInterface
         $properties = [];
 
         foreach ($this->propertiesParameters as $propertyName => $propertyParameters) {
-            $key = $this->decamelize($propertyName);
+            $key = $propertyParameters['encodedName'];
 
             $decoded = Builder::build($propertyParameters)->decode($value[$key] ?? null);
 
@@ -59,10 +60,5 @@ abstract class ImmutableObjectTransformer implements TransformerInterface
             $properties[] = $decoded;
         }
         return new $this->objectClass(...$properties);
-    }
-
-    protected function decamelize(string $string): string
-    {
-        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string) ?: '');
     }
 }

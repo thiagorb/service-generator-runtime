@@ -36,7 +36,8 @@ abstract class BaseService
 		$requestData = [];
 		foreach ($methodMeta['parameters'] as $parameter => $parameterType) {
 			if (array_key_exists($parameter, $parameters)) {
-				$requestData[$this->decamelize($parameter)] = $this->context->encode($parameterType, $parameters[$parameter]);
+				$encodedKey = $parameterType['encodedName'];
+				$requestData[$encodedKey] = $this->context->encode($parameterType, $parameters[$parameter]);
 			}
 		}
 
@@ -75,10 +76,5 @@ abstract class BaseService
     {
         $implementationClass = $this->context->getImplementation($contract);
 		return new $implementationClass($this->context, $this->baseUrl . $name . '/');
-	}
-
-	protected function decamelize(string $string): string
-	{
-		return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string) ?: '');
 	}
 }
