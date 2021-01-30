@@ -36,9 +36,7 @@ abstract class ImmutableObjectTransformer implements TransformerInterface
             /** @todo: find better way to get values, but preferably without relying on reflection */
             $getter = 'get' . ucfirst($propertyName);
             $encodedValue = Builder::build($propertyParameters)->encode($value->$getter());
-            if (!is_null($encodedValue)) {
-                $encoded[$propertyParameters['encodedName']] = $encodedValue;
-            }
+            $encoded[$propertyParameters['encodedName']] = $encodedValue;
         }
 
         return $encoded;

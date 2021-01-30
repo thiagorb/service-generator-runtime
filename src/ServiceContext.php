@@ -35,6 +35,7 @@ abstract class ServiceContext
 		if (strtoupper($httpMethod === 'GET')) {
 			return $this->requestFactory->create($httpMethod, $url . '?' . http_build_query($data));
 		}
+
 		return $this->requestFactory->create($httpMethod, $url, $data);
 	}
 
